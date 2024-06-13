@@ -1,4 +1,10 @@
-//https://584a-193-115-255-67.ngrok-free.app 
+// SERVER_URL=https://584a-193-115-255-67.ngrok-free.app 
+// GROOVE_ACCESS_TOKEN=7780f5588b37746ac32ece1035b8c2b22428a5ed5ff8139841f311b339fe63de
+// TIMELY_CLIENT_ID=SvhLicmoNUOP4nvJ6uiEyxeuloqH4yN4ItktAQwvL9M
+// TIMELY_CLIENT_SECRET=IfY6-b5E18T10YxgHzW5W0DfX8V-AYbihzDw5EONzP4
+// TIMELY_REFRESH=77aq-Sc7RYmwRUzlvNuTjOO0ZEcuLOK5wCeX1NyBwu8
+// TIMELY_BEARER=SdNajocdBuFKUessiB0K4nUPxjOxX_tVMKvKIqocx5Q
+// TIMELY_ACCOUNTID=1092419
 
 const Koa = require('koa');
 const Router = require('@koa/router');
