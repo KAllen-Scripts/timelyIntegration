@@ -78,7 +78,8 @@ router.post('/timely-refresh-projects', async (ctx) => {
     maxBodyLength: Infinity,
     url: `https://api.timelyapp.com/1.1/${process.env.TIMELY_ACCOUNTID}/projects`,
     headers: { 
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: process.env.TIMELY_BEARER
     }
   }).then(r=>{return r.data})
 
