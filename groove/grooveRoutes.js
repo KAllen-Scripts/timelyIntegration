@@ -1,30 +1,29 @@
-const {addEventToDatabase } = require('../misc/eventsdb');
+const {addEventToDatabase } = require('../misc/eventsdb.js');
 const Router = require('@koa/router');
 const router = new Router();
+const grooveFunctions = require('./grooveFunctions.js')
 
-router.post('/aircall-calls', async (ctx) => {
+router.post('/groove-replies', async (ctx) => {
     const requestData = ctx.request.body;
-  
-    if (requestData.data.answered_at == null){
-      ctx.body = {};
-      return
-    }
-  
+    
+    let ticketNumber = requestData.app_ticket_url.split('/').at(-1)
+
     let eventDetails = {
-      type: 'aircall',
-      agentEmail: requestData.data.user.email,
-      eventTime: new Date(requestData.data.answered_at * 1000).toLocaleString('en-GB', { timeZone: 'Europe/London' }),
-      customerID: requestData?.data?.contact?.company_name,
-      contactNumber: requestData.data.raw_digits,
-      timeTakenInSeconds: requestData.data.ended_at - requestData.data.answered_at,
-      timeTakenInMinutes: (requestData.data.ended_at - requestData.data.answered_at) / 60
+      type: 'groove',
+      agentEmail: requestData.links.author.href.split('/').at(-1),
+      eventTime: new Date(requestData.created_at).toLocaleString('en-GB', { timeZone: 'Europe/London' }),
+      ticketNumber,
+      customerID: await grooveFunctions.getCustomerId(ticketNumber),
+      ticketTitle: await grooveFunctions.getTicketTitle(ticketNumber),
+      timeTakenInSeconds: 5 * 60,
+      timeTakenInMinutes: 5
     }
-  
+
     addEventToDatabase(eventDetails)
-  
+
     console.log(eventDetails)
-  
+
     ctx.body = {};
-  });
+});
 
 module.exports = router;

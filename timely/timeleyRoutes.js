@@ -38,6 +38,8 @@ router.post('/timely-refresh-auth', async (ctx) => {
 })
   
 router.get('/timely-auth', async (ctx) => {
+
+    console.log(ctx.request)
   
     let data = {
       "redirect_uri": `${process.env.SERVER_URL}/timely-auth`,
