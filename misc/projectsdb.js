@@ -59,3 +59,8 @@ function getProjectByAccountKey(projectAccountKey) {
       });
     });
 }
+
+modules.export = {
+  addProjectToDatabase,
+  getProjectByAccountKey
+}

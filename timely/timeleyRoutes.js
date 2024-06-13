@@ -5,6 +5,7 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 const path = require('path');
 const { addProjectToDatabase } = require('../misc/projectsdb')
+const { addUsersToDatabase } = require('../misc/timleyUsersdb')
 
 dotenv.config();
 
@@ -82,6 +83,26 @@ router.post('/timely-refresh-projects', async (ctx) => {
 
   for (const project of projects){
     addProjectToDatabase({projectId: project.id, projectAccountKey: project.external_id})
+  }
+
+  ctx.body = {};
+})
+
+
+
+router.post('/timely-refresh-users', async (ctx) => {
+
+  let users = await axios({
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: `https://api.timelyapp.com/1.1/${process.env.TIMELY_ACCOUNTID}/users`,
+    headers: { 
+      Authorization: `Bearer ${process.env.TIMELY_BEARER}`
+    }
+  }).then(r=>{return r.data})
+
+  for (const user of users){
+    addUsersToDatabase({userId: user.id, userEmail: user.email})
   }
 
   ctx.body = {};
