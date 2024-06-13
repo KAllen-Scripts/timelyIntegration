@@ -60,7 +60,7 @@ function getProjectByAccountKey(projectAccountKey) {
     });
 }
 
-modules.export = {
+module.exports = {
   addProjectToDatabase,
   getProjectByAccountKey
 }

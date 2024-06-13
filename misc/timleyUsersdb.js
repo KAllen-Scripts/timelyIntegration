@@ -59,7 +59,7 @@ function getUserByEmail(userEmail) {
     });
 }
 
-modules.export = {
+module.exports = {
     addUsersToDatabase,
     getUserByEmail
 }
