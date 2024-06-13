@@ -73,27 +73,20 @@ router.get('/timely-auth', async (ctx) => {
 
 router.post('/timely-refresh-projects', async (ctx) => {
 
-  console.log({
+  let config = {
     method: 'get',
     maxBodyLength: Infinity,
     url: `https://api.timelyapp.com/1.1/${process.env.TIMELY_ACCOUNTID}/projects`,
     headers: { 
       Authorization: process.env.TIMELY_BEARER
     }
-  })
-
-  let projects = await axios({
-    method: 'get',
-    maxBodyLength: Infinity,
-    url: `https://api.timelyapp.com/1.1/${process.env.TIMELY_ACCOUNTID}/projects`,
-    headers: { 
-      Authorization: process.env.TIMELY_BEARER
-    }
-  }).then(r=>{return r.data})
-
-  for (const project of projects){
-    addProjectToDatabase({projectId: project.id, projectAccountKey: project.external_id})
   }
+
+  await axios.request(config)
+
+  // for (const project of projects){
+  //   addProjectToDatabase({projectId: project.id, projectAccountKey: project.external_id})
+  // }
 
   ctx.body = {};
 })
