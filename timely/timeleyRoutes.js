@@ -74,11 +74,10 @@ router.get('/timely-auth', async (ctx) => {
 router.post('/timely-refresh-projects', async (ctx) => {
 
   let projects = await axios({
-    method: 'post',
+    method: 'get',
     maxBodyLength: Infinity,
     url: `https://api.timelyapp.com/1.1/${process.env.TIMELY_ACCOUNTID}/projects`,
     headers: { 
-      'Content-Type': 'application/json',
       Authorization: process.env.TIMELY_BEARER
     }
   }).then(r=>{return r.data})
