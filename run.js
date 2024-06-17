@@ -1,5 +1,4 @@
 //https://87a7-193-115-255-67.ngrok-free.app
-//UbYGC9W0xfOKQhq90JO8pO3VxPSxrSoJTO7j7aXm4Nk
 
 const Koa = require('koa');
 const Router = require('@koa/router');

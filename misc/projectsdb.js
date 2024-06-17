@@ -22,7 +22,7 @@ const projects = new sqlite3.Database('projects.sqlite', (err) => {
 });
 
 
-function addProjectToDatabase(projectData) {
+async function addProjectToDatabase(projectData) {
     const { projectId, projectAccountKey } = projectData;
   
     // First, try to update an existing record with the given projectAccountKey

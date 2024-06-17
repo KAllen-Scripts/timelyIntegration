@@ -26,7 +26,6 @@ router.post('/timely-refresh-auth', async (ctx) => {
     headers: { 'Content-Type': 'application/json' },
     data
   }).then(r => {
-    console.log(r.data)
     const envConfig = dotenv.config().parsed;
     envConfig.TIMELY_REFRESH = r.data.refresh_token
     envConfig.TIMELY_BEARER = r.data.access_token
@@ -73,7 +72,7 @@ router.get('/timely-auth', async (ctx) => {
 router.post('/timely-refresh-projects', async (ctx) => {
 
   let projects = await axios({
-    method: 'post',
+    method: 'get',
     maxBodyLength: Infinity,
     url: `https://api.timelyapp.com/1.1/${process.env.TIMELY_ACCOUNTID}/projects`,
     headers: { 
@@ -82,7 +81,7 @@ router.post('/timely-refresh-projects', async (ctx) => {
   }).then(r=>{return r.data})
 
   for (const project of projects){
-    addProjectToDatabase({projectId: project.id, projectAccountKey: project.external_id})
+    await addProjectToDatabase({projectId: project.id, projectAccountKey: project.external_id})
   }
 
   ctx.body = {};
