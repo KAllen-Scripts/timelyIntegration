@@ -13,17 +13,19 @@ async function makeEvent(event){
   if(event.agentEmail.toLowerCase() != 'k.allen@stok.ly'){return}
   let title
   if(event.type == 'groove'){
-    title = `${event.ticketTitle} - [${event.ticketNumber}] || ${event.customerID || 'Unknown'} at ${event.eventTime}`
+    title = `${event.ticketTitle} - [${event.ticketNumber}] || ${event.customerID || 'Unknown'} at [${event.eventTime}]`
   } else {
-    title = `Aircall || ${event.customerID || 'Unknown'} at ${event.eventTime}`
+    title = `Aircall || ${event.customerID || 'Unknown'} at [${event.eventTime}]`
   }
 
-  let projectID = await ((event.customerID == null ? defaultProject : await getProjectByAccountKey(event.customerID)) || defaultProject)
+  let projectID = await (event.customerID ? getProjectByAccountKey(event.customerID) : Promise.resolve({ projectId: defaultProject })).then(r => r.projectId);
+
+  console.log(Math.ceil(event.timeTakenInSeconds / 60) * 60)
 
   let data = {
       "event": {
         "user_id": await getUserByEmail(event.agentEmail).then(r=>{return r.userId}),
-        "seconds": event.timeTakenInSeconds,
+        "seconds": Math.ceil(event.timeTakenInSeconds / 60) * 60,
         "day": event.eventTime,
         "note": title,
         "project_id": projectID,
