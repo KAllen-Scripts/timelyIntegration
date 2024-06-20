@@ -5,10 +5,6 @@ const axios = require('axios');
 const dotenv = require('dotenv');
 dotenv.config();
 
-const defaultProject = 4602148
-const parentLabel = 3880993
-const childLabel = 3880994
-
 async function makeEvent(event){
   if(event.agentEmail.toLowerCase() != 'k.allen@stok.ly'){return}
   let title
@@ -18,7 +14,7 @@ async function makeEvent(event){
     title = `Aircall || ${event.customerID || 'Unknown'} at [${event.eventTime}]`
   }
 
-  let projectID = await (event.customerID ? getProjectByAccountKey(event.customerID) : Promise.resolve({ projectId: defaultProject })).then(r => r.projectId);
+  let projectID = await (event.customerID ? getProjectByAccountKey(event.customerID) : Promise.resolve({ projectId: process.env.defaultProject })).then(r => r.projectId);
 
   console.log(Math.ceil(event.timeTakenInSeconds / 60) * 60)
 
@@ -30,8 +26,8 @@ async function makeEvent(event){
         "note": title,
         "project_id": projectID,
         "label_ids": [
-              parentLabel,
-              childLabel
+              process.env.parentLabel,
+              process.env.childLabel
             ]
       }
     }
