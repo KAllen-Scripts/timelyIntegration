@@ -6,7 +6,7 @@ const router = new Router();
 router.post('/aircall-calls', async (ctx) => {
     const requestData = ctx.request.body;
   
-    if (requestData.data.answered_at == null){
+    if (requestData.event != 'call.ended'){
       ctx.body = {};
       return
     }

@@ -14,7 +14,7 @@ async function makeEvent(event){
     title = `Aircall || ${event.customerID || 'Unknown'} at [${event.eventTime}]`
   }
 
-  let projectID = await (event.customerID ? getProjectByAccountKey(event.customerID) : Promise.resolve({ projectId: process.env.defaultProject })).then(r => r.projectId);
+  let projectID = event.customerID ? await getProjectByAccountKey(event.customerID).then(r => r.projectId).catch(() => process.env.defaultProject) : process.env.defaultProject;
 
   console.log(Math.ceil(event.timeTakenInSeconds / 60) * 60)
 
