@@ -1,4 +1,5 @@
-const {addEventToDatabase } = require('../misc/eventsdb');
+const { addEventToDatabase } = require('../misc/eventsdb');
+const { makeEvent } = require('../timely/timelyEvents')
 const Router = require('@koa/router');
 const router = new Router();
 
@@ -19,10 +20,10 @@ router.post('/aircall-calls', async (ctx) => {
       timeTakenInSeconds: requestData.data.ended_at - requestData.data.answered_at,
       timeTakenInMinutes: (requestData.data.ended_at - requestData.data.answered_at) / 60
     }
-  
+
     addEventToDatabase(eventDetails)
-  
-    console.log(eventDetails)
+
+    await makeEvent(eventDetails)
   
     ctx.body = {};
   });

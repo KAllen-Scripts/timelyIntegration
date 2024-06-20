@@ -6,9 +6,6 @@ const events = new sqlite3.Database('events.sqlite', (err) => {
     console.error(err.message);
     throw err;
   } else {
-    console.log('Connected to the SQLite database.');
-
-    // Create a table to store the data
     events.run(`CREATE TABLE IF NOT EXISTS events (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       type TEXT,
@@ -22,8 +19,6 @@ const events = new sqlite3.Database('events.sqlite', (err) => {
     )`, (err) => {
       if (err) {
         console.error(err.message);
-      } else {
-        console.log('Table created successfully.');
       }
     });
   }
@@ -36,8 +31,6 @@ function addEventToDatabase(eventData) {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [type, agentEmail, eventTime, ticketNumber, customerID, ticketTitle, timeTakenInSeconds, timeTakenInMinutes], (err) => {
       if (err) {
         console.error(err.message);
-      } else {
-        console.log('Data inserted successfully.');
       }
     });
 }

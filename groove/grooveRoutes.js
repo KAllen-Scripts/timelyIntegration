@@ -1,4 +1,5 @@
 const {addEventToDatabase } = require('../misc/eventsdb.js');
+const { makeEvent } = require('../timely/timelyEvents')
 const Router = require('@koa/router');
 const router = new Router();
 const grooveFunctions = require('./grooveFunctions.js')
@@ -21,7 +22,7 @@ router.post('/groove-replies', async (ctx) => {
 
     addEventToDatabase(eventDetails)
 
-    console.log(eventDetails)
+    await makeEvent(eventDetails)
 
     ctx.body = {};
 });

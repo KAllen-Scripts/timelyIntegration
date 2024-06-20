@@ -5,27 +5,24 @@ const users = new sqlite3.Database('users.sqlite', (err) => {
     console.error(err.message);
     throw err;
   } else {
-    console.log('Connected to the SQLite database.');
-
-    users.run(`CREATE TABLE IF NOT EXISTS events (
+    users.run(`CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       userId INTEGER,
       userEmail TEXT UNIQUE
     )`, (err) => {
       if (err) {
         console.error(err.message);
-      } else {
-        console.log('Table created successfully.');
       }
     });
   }
 });
 
 
-function addUsersToDatabase(userData) {
+async function addUsersToDatabase(userData) {
     const { userId, userEmail } = userData;
   
-    users.run(`UPDATE events SET userId = ? WHERE userEmail = ?`, [userId, userEmail], function(err) {
+    // First, try to update an existing record with the given projectAccountKey
+    users.run(`UPDATE users SET userId = ? WHERE userEmail = ?`, [userId, userEmail], function(err) {
       if (err) {
         console.error(err.message);
         return;
@@ -33,22 +30,18 @@ function addUsersToDatabase(userData) {
   
       // If no rows were updated, insert a new record
       if (this.changes === 0) {
-        projects.run(`INSERT INTO events (userId, userEmail) VALUES (?, ?)`, [userId, userEmail], (err) => {
+        users.run(`INSERT INTO users (userId, userEmail) VALUES (?, ?)`, [userId, userEmail], (err) => {
             if (err) {
             console.error(err.message);
-            } else {
-            console.log('Data inserted successfully.');
             }
         });
-      } else {
-        console.log('Data updated successfully.');
       }
     });
 }
 
 function getUserByEmail(userEmail) {
     return new Promise((resolve, reject) => {
-        users.get(`SELECT * FROM events WHERE userEmail = ?`, [userEmail], (err, row) => {
+      users.get(`SELECT * FROM users WHERE userEmail = ?`, [userEmail], (err, row) => {
         if (err) {
           console.error(err.message);
           reject(err);
@@ -59,7 +52,8 @@ function getUserByEmail(userEmail) {
     });
 }
 
+
 module.exports = {
-    addUsersToDatabase,
-    getUserByEmail
+  addUsersToDatabase,
+  getUserByEmail
 }
